@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_y57wc"]
 [ext_resource type="Script" path="res://Player/reticle.gd" id="2_rapx3"]
 [ext_resource type="Theme" uid="uid://ud5dffnvonm2" path="res://UI&Resource/new_theme.tres" id="3_4oarh"]
-[ext_resource type="Script" path="res://Scripts/debug_panel.gd" id="4_dt1y3"]
+[ext_resource type="Script" path="res://Scripts/debug.gd" id="4_dt1y3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xe8qx"]
 
