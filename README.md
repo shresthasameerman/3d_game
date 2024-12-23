@@ -20,7 +20,7 @@ Welcome to the alpha release of my first 3D FPS shooter! This game is developed 
 
 ## 💻 Technical Information
 
-- **Engine**: Godot Engine (v3.x)
+- **Engine**: Godot Engine (v4.x)
 - **Platform**: PC (Windows/Linux)
 - **Codebase**: Godot scripting language (GDScript)
 - **Art & Assets**: Basic 3D models and assets (created using free resources).
