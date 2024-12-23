@@ -1,7 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://c4uwnn6flvoya"]
+[gd_scene load_steps=11 format=3 uid="uid://c4uwnn6flvoya"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_y57wc"]
 [ext_resource type="Script" path="res://Player/reticle.gd" id="2_rapx3"]
+[ext_resource type="Theme" uid="uid://ud5dffnvonm2" path="res://UI&Resource/new_theme.tres" id="3_4oarh"]
+[ext_resource type="Script" path="res://Scripts/debug_panel.gd" id="4_dt1y3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xe8qx"]
 
@@ -150,3 +152,20 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_rapx3")
+
+[node name="DebugPanel" type="PanelContainer" parent="UI"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 210.0
+offset_bottom = 50.0
+theme = ExtResource("3_4oarh")
+script = ExtResource("4_dt1y3")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/DebugPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/DebugPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
