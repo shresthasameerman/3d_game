@@ -54,6 +54,7 @@ func _update_camera(delta):
 	_tilt_input = 0.0
 
 func _ready():
+	Global.player = self
 	# Get mouse input
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_speed = SPEED  # Initialize _speed from the exported variable
