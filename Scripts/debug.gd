@@ -1,12 +1,13 @@
 extends PanelContainer
 
-@onready var property_container = %VBoxContainer
+@onready var v_box_container: VBoxContainer = %VBoxContainer  # Ensure this references an actual VBoxContainer node
 
 var frames_per_second: String
 
 func _ready():
 	Global.debug = self
 	visible = false
+	print("Debug panel ready")
 
 func _process(delta):
 	if visible:
@@ -16,14 +17,15 @@ func _process(delta):
 func _input(event):
 	if event.is_action_pressed("Debug"):
 		visible = !visible
+		print("Debug panel visibility toggled: %s" % visible)
 
 func add_property(title: String, value, order: int):
-	var target = property_container.find_child(title, true, false)
+	var target = v_box_container.find_child(title, true, false)
 	if !target:
 		target = Label.new()
-		property_container.add_child(target)
+		v_box_container.add_child(target)
 		target.name = title
-		target.text = title + ": " + str(value)
-	elif visible:
-		target.text = title + ": " + str(value)
-		property_container.move_child(target, order)
+		print("Added new property: %s" % title)
+	target.text = title + ": " + str(value)
+	v_box_container.move_child(target, order)
+	print("Updated property: %s" % title)

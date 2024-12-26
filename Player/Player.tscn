@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c4uwnn6flvoya"]
+[gd_scene load_steps=12 format=3 uid="uid://c4uwnn6flvoya"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_y57wc"]
 [ext_resource type="Script" path="res://Player/reticle.gd" id="2_rapx3"]
@@ -47,6 +47,39 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector3(0, 2.5, -0.184)]
 }
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("camera controller:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("camera controller:position:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(2.5, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("camera controller:position:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.184, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
 
 [sub_resource type="Animation" id="Animation_vxgpk"]
 resource_name = "crouch"
@@ -87,10 +120,49 @@ tracks/2/keys = {
 "values": [Vector3(0, 2.5, -0.184), Vector3(0, 1, -0.184)]
 }
 
+[sub_resource type="Animation" id="Animation_1r2ek"]
+resource_name = "walking"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("camera controller:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0, -0.000111126, 0.00998307, -0.401783, -5.88347e-05, 0.398217, 9.80584e-06, -0.00500873, -0.501783, 8.82521e-05, 0.464884, 1.96116e-05, 0.0102698, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.333333, 0.933333, 1.53333, 2)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("camera controller:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.166667, 0.000163434, 0.0007812, -0.311651, 0.0257605, 0.0333333, -0.000549124, 5.69708e-06, -0.1, -0.000264756, 0.333333, 0.000490289, 5.55703e-05, -0.478318, 0.0269185, 0.366667, -0.000353009, 1.63472e-05, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.866667, 1, 2, 2.1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("camera controller:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rjlig"]
 _data = {
 "RESET": SubResource("Animation_n8wpo"),
-"crouch": SubResource("Animation_vxgpk")
+"crouch": SubResource("Animation_vxgpk"),
+"walking": SubResource("Animation_1r2ek")
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_iyeqr"]
@@ -114,9 +186,7 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -0.184)
 
 [node name="Camera3D" type="Camera3D" parent="camera controller"]
-
-[node name="ReflectionProbe" type="ReflectionProbe" parent="camera controller/Camera3D"]
-update_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0844514, -0.0404529)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

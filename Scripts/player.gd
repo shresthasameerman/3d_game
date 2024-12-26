@@ -5,20 +5,22 @@ extends CharacterBody3D
 @export var MOUSE_SENSITIVITY : float = 0.5
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90.0)
 @export var TILT_UPPER_LIMIT := deg_to_rad(90.0)
-@export var CAMERA_CONTROLLER : Camera3D
+@export var ACCELERATION: float = 0.1
+@export var DECELERATION: float = 0.25
+@export var CAMERA_CONTROLLER: Camera3D
 @export var animation_player: AnimationPlayer
 @export var CROUCH_SHAPECAST: Node
 @export_range(0.1, 1.0, 0.1) var CROUCH_SPEED_MULTIPLIER: float = 0.5  # Multiplier for crouch speed
 
-var _mouse_input : bool = false
-var _rotation_input : float
-var _tilt_input : float
-var _mouse_rotation : Vector3
-var _player_rotation : Vector3
-var _camera_rotation : Vector3
-var _is_crouching : bool = false
-var _speed : float
-const SPEED_DEFAULT : float = 10.0  # Assigned a fixed constant value
+var _mouse_input: bool = false
+var _rotation_input: float
+var _tilt_input: float
+var _mouse_rotation: Vector3
+var _player_rotation: Vector3
+var _camera_rotation: Vector3
+var _is_crouching: bool = false
+var _speed: float
+const SPEED_DEFAULT: float = 10.0  # Assigned a fixed constant value
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -58,10 +60,11 @@ func _ready():
 	# Get mouse input
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_speed = SPEED  # Initialize _speed from the exported variable
-	CROUCH_SHAPECAST.add_exception($".")
+	CROUCH_SHAPECAST.add_exception(self)
 
 func _physics_process(delta):
-	Global.debug.add_property("MovementSpeed", _speed, 1)
+	if Global.debug:
+		Global.debug.add_property("MovementSpeed", _speed, 1)
 
 	# Update camera movement based on mouse movement
 	_update_camera(delta)
@@ -79,11 +82,11 @@ func _physics_process(delta):
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
 	if direction:
-		velocity.x = direction.x * _speed
-		velocity.z = direction.z * _speed
+		velocity.x = lerp(velocity.x, direction.x * _speed, ACCELERATION)
+		velocity.z = lerp(velocity.z, direction.z * _speed, ACCELERATION)
 	else:
-		velocity.x = move_toward(velocity.x, 0, _speed)
-		velocity.z = move_toward(velocity.z, 0, _speed)
+		velocity.x = move_toward(velocity.x, 0, DECELERATION)
+		velocity.z = move_toward(velocity.z, 0, DECELERATION)
 
 	move_and_slide()
 
