@@ -1,13 +1,56 @@
-[gd_scene load_steps=12 format=3 uid="uid://c4uwnn6flvoya"]
+[gd_scene load_steps=15 format=3 uid="uid://c4uwnn6flvoya"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_y57wc"]
 [ext_resource type="Script" path="res://Player/reticle.gd" id="2_rapx3"]
 [ext_resource type="Theme" uid="uid://ud5dffnvonm2" path="res://UI&Resource/new_theme.tres" id="3_4oarh"]
 [ext_resource type="Script" path="res://Scripts/debug.gd" id="4_dt1y3"]
+[ext_resource type="Script" path="res://Scripts/state_machine.gd" id="5_d78sh"]
+[ext_resource type="Script" path="res://Scripts/IdlePlayerState.gd" id="6_7ving"]
+[ext_resource type="Script" path="res://Scripts/WalkingPlayerState.gd" id="7_84re3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xe8qx"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_esi2p"]
+lightmap_size_hint = Vector2i(17, 14)
+
+[sub_resource type="Animation" id="Animation_vxgpk"]
+resource_name = "crouch"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 0.75, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("camera controller:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 2.5, -0.184), Vector3(0, 1, -0.184)]
+}
 
 [sub_resource type="Animation" id="Animation_n8wpo"]
 length = 0.001
@@ -81,47 +124,8 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0)
 }
 
-[sub_resource type="Animation" id="Animation_vxgpk"]
-resource_name = "crouch"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CollisionShape3D:shape:height")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [2.0, 1.5]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CollisionShape3D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0, 0.75, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("camera controller:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 2.5, -0.184), Vector3(0, 1, -0.184)]
-}
-
-[sub_resource type="Animation" id="Animation_1r2ek"]
-resource_name = "walking"
+[sub_resource type="Animation" id="Animation_mjo5i"]
+resource_name = "camera_bob"
 length = 2.0
 loop_mode = 1
 tracks/0/type = "bezier"
@@ -132,8 +136,8 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0, -0.000111126, 0.00998307, -0.401783, -5.88347e-05, 0.398217, 9.80584e-06, -0.00500873, -0.501783, 8.82521e-05, 0.464884, 1.96116e-05, 0.0102698, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.333333, 0.933333, 1.53333, 2)
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.135, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0.135, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
 }
 tracks/1/type = "bezier"
 tracks/1/imported = false
@@ -143,8 +147,8 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.166667, 0.000163434, 0.0007812, -0.311651, 0.0257605, 0.0333333, -0.000549124, 5.69708e-06, -0.1, -0.000264756, 0.333333, 0.000490289, 5.55703e-05, -0.478318, 0.0269185, 0.366667, -0.000353009, 1.63472e-05, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.866667, 1, 2, 2.1)
+"points": PackedFloat32Array(2.5, -0.345, -0.705, 0.28, 0.845, 2.5, -0.345, -0.705, 0.28, 0.845, 2.5, -0.345, -0.705, 0.28, 0.845, 2.5, -0.345, -0.705, 0.28, 0.845, 2.5, -0.345, -0.705, 0.28, 0.845),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
 }
 tracks/2/type = "bezier"
 tracks/2/imported = false
@@ -154,24 +158,25 @@ tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(0.135, -0.25, 0, 0.25, 0, 0.135, -0.25, 0, 0.25, 0, 0.135, -0.25, 0, 0.25, 0, 0.135, -0.25, 0, 0.25, 0, 0.135, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rjlig"]
 _data = {
 "RESET": SubResource("Animation_n8wpo"),
-"crouch": SubResource("Animation_vxgpk"),
-"walking": SubResource("Animation_1r2ek")
+"camera_bob": SubResource("Animation_mjo5i"),
+"crouch": SubResource("Animation_vxgpk")
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_iyeqr"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "animation_player", "CROUCH_SHAPECAST")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "animation_player", "CROUCH_SHAPECAST", "state_machine")]
 script = ExtResource("1_y57wc")
 CAMERA_CONTROLLER = NodePath("camera controller/Camera3D")
 animation_player = NodePath("AnimationPlayer")
 CROUCH_SHAPECAST = NodePath("ShapeCast3D")
+state_machine = NodePath("PlayerStateMachine")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -239,3 +244,13 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/DebugPanel/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("CURRENT_STATE")]
+script = ExtResource("5_d78sh")
+CURRENT_STATE = NodePath("IdlePlayerState")
+
+[node name="IdlePlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("6_7ving")
+
+[node name="WalkingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("7_84re3")
