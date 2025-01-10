@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @export var SPEED : float = 10.0
+@export var SPEED_SPRINTING : float = 7.0
 @export var JUMP_VELOCITY : float = 5
 @export var MOUSE_SENSITIVITY : float = 0.5
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90.0)
@@ -10,7 +11,9 @@ extends CharacterBody3D
 @export var CAMERA_CONTROLLER: Camera3D
 @export var animation_player: AnimationPlayer
 @export var CROUCH_SHAPECAST: Node
-@export_range(0.1, 1.0, 0.1) var CROUCH_SPEED_MULTIPLIER: float = 0.5  # Multiplier for crouch speed
+@export var state_machine: StateMachine
+@export_range(0.1, 1.0, 0.1) var CROUCH_SPEED_MULTIPLIER: float = 0.5
+@export var ENABLE_CAMERA_BOB: bool = true
 
 var _mouse_input: bool = false
 var _rotation_input: float
@@ -20,9 +23,8 @@ var _player_rotation: Vector3
 var _camera_rotation: Vector3
 var _is_crouching: bool = false
 var _speed: float
-const SPEED_DEFAULT: float = 10.0  # Assigned a fixed constant value
+const SPEED_DEFAULT: float = 10.0
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -39,7 +41,6 @@ func _input(event):
 		toggle_crouch()
 
 func _update_camera(delta):
-	# Rotates camera using euler rotation
 	_mouse_rotation.x += _tilt_input * delta
 	_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
 	_mouse_rotation.y += _rotation_input * delta
@@ -57,27 +58,30 @@ func _update_camera(delta):
 
 func _ready():
 	Global.player = self
-	# Get mouse input
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	_speed = SPEED  # Initialize _speed from the exported variable
+	_speed = SPEED
 	CROUCH_SHAPECAST.add_exception(self)
 
 func _physics_process(delta):
 	if Global.debug:
-		Global.debug.add_property("MovementSpeed", _speed, 1)
+		Global.debug.add_property("MovementSpeed", "%.2f" % _speed, 1)
+		Global.debug.add_property("Velocity", "%.2f" % velocity.length(), 2)
+		Global.debug.add_property("Position", "(%.1f, %.1f, %.1f)" % [position.x, position.y, position.z], 3)
+		Global.debug.add_property("Is Crouching", str(_is_crouching), 4)
+		Global.debug.add_property("On Floor", str(is_on_floor()), 5)
+		
+		var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+		var input_state = "None" if input_dir.length() == 0 else "Moving"
+		Global.debug.add_property("Input State", input_state, 6)
 
-	# Update camera movement based on mouse movement
 	_update_camera(delta)
 
-	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
-	# Handle Jump.
 	if Input.is_action_just_pressed("Jump") and is_on_floor() and not _is_crouching:
 		velocity.y = JUMP_VELOCITY
 
-	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
@@ -100,3 +104,19 @@ func toggle_crouch():
 		animation_player.play("crouch", -1, _speed * CROUCH_SPEED_MULTIPLIER)
 		_speed = SPEED * CROUCH_SPEED_MULTIPLIER
 	_is_crouching = !_is_crouching
+
+
+# Add this method to control camera bob animation
+func toggle_camera_bob(enable: bool) -> void:
+	if ENABLE_CAMERA_BOB and animation_player.has_animation("camera_bob") and not _is_crouching:  # Check for not crouching
+		if enable and not animation_player.is_playing():
+			animation_player.play("camera_bob")
+		elif not enable:
+			animation_player.stop()
+			# Reset camera position to default
+			if CAMERA_CONTROLLER:
+				CAMERA_CONTROLLER.position = CAMERA_CONTROLLER.position.lerp(Vector3.ZERO, 0.1)
+	elif _is_crouching and animation_player.is_playing():  # Stop animation if player starts crouching
+		animation_player.stop()
+		if CAMERA_CONTROLLER:
+			CAMERA_CONTROLLER.position = CAMERA_CONTROLLER.position.lerp(Vector3.ZERO, 0.1)

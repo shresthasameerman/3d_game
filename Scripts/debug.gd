@@ -1,6 +1,6 @@
 extends PanelContainer
 
-@onready var v_box_container: VBoxContainer = %VBoxContainer  # Ensure this references an actual VBoxContainer node
+@onready var v_box_container: VBoxContainer = %VBoxContainer
 
 var frames_per_second: String
 
@@ -28,4 +28,3 @@ func add_property(title: String, value, order: int):
 		print("Added new property: %s" % title)
 	target.text = title + ": " + str(value)
 	v_box_container.move_child(target, order)
-	print("Updated property: %s" % title)

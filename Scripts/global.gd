@@ -1,6 +1,8 @@
 extends Node
 
+var debug = null
+var player = null
 
-var debug
-
-var player
+func _ready():
+	debug = null
+	player = null
