@@ -5,7 +5,6 @@ extends State
 @export var CROUCH_SPEED: float = 3.0  # Slower movement while crouching
 @export var CROUCH_HEIGHT: float = 1.0  # Height when crouched (will be multiplied by original height)
 @export var TRANSITION_SPEED: float = 10.0  # Speed of crouch animation
-
 var original_height: float
 var original_y_position: float
 var collision_shape: CollisionShape3D
@@ -61,6 +60,8 @@ func update(delta: float) -> void:
 			transition.emit("WalkingPlayerState")
 		else:
 			transition.emit("IdlePlayerState")
+	elif Input.is_action_pressed("jump") and Global.player.is_on_floor():
+		transition.emit("JumpingPlayerState")
 
 func _input(event: InputEvent) -> void:
 	# Handle any specific input events while crouching

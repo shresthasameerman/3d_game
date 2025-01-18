@@ -30,6 +30,8 @@ func _input(event: InputEvent) -> void:
 		transition.emit("WalkingPlayerState")
 	elif event.is_action_pressed("crouch"):
 		transition.emit("CrouchingPlayerState")
+	elif event.is_action_pressed("Jump") and Global.player.is_on_floor():
+		transition.emit("JumpingPlayerState")
 
 func check_for_transition() -> void:
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
