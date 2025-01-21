@@ -1,5 +1,6 @@
-class_name SprintingPlayerState
 extends State
+
+class_name SprintingPlayerState
 
 @export var ANIMATION: AnimationPlayer
 @export var SPRINT_SPEED: float = 15.0
@@ -25,7 +26,6 @@ func update(delta: float) -> void:
 	check_for_transition()
 
 func _input(event: InputEvent) -> void:
-	# Transition to WalkingPlayerState if sprint key is released
 	if event.is_action_released("sprint"):
 		transition.emit("WalkingPlayerState")
 	elif event.is_action_pressed("crouch"):

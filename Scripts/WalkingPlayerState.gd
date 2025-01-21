@@ -1,5 +1,6 @@
-class_name WalkingPlayerState
 extends State
+
+class_name WalkingPlayerState
 
 @export var ANIMATION: AnimationPlayer
 @export var TOP_ANIM_SPEED: float = 2.2

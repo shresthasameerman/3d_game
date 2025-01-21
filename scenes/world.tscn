@@ -19,6 +19,14 @@ background_mode = 2
 sky = SubResource("Sky_h1v1i")
 tonemap_mode = 2
 glow_enabled = true
+fog_light_color = Color(1, 1, 1, 1)
+fog_light_energy = 1.47
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1618
+volumetric_fog_emission = Color(0.377919, 0.377919, 0.377919, 1)
+volumetric_fog_emission_energy = 0.1
+volumetric_fog_detail_spread = 2.5
+volumetric_fog_ambient_inject = 0.01
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ciytk"]
 albedo_texture = ExtResource("7_fjoq5")
@@ -190,12 +198,15 @@ normal_texture = ExtResource("2_3i0gi")
 data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
 [node name="World" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01035, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0t73y")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.207291, 0.441815, 0.872829, -0.0220551, -0.889871, 0.45568, 0.978031, -0.113706, -0.174715, 0, 0, 0)
+light_indirect_energy = 6.744
+light_volumetric_fog_energy = 3.86
 shadow_enabled = true
 
 [node name="Room2" type="Node" parent="."]
@@ -376,6 +387,42 @@ skeleton = NodePath("../../Room2/Floor")
 [node name="StaticBody3D" type="StaticBody3D" parent="Room1/wall9"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room1/wall9/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999998, 1.19904e-14, 0, 3.12639e-13, 1, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_0sgno")
+
+[node name="wall12" type="MeshInstance3D" parent="Room1"]
+transform = Transform3D(7.87, 0, 0, 0, -1.1518e-07, -0.395, 0, 2.635, -1.7266e-08, -14.9208, 2.82986, -10.5902)
+material_override = SubResource("StandardMaterial3D_2jlog")
+mesh = SubResource("BoxMesh_q848w")
+skeleton = NodePath("../../Room2/Floor")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Room1/wall12"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room1/wall12/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999998, 1.19904e-14, 0, 3.12639e-13, 1, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_0sgno")
+
+[node name="wall13" type="MeshInstance3D" parent="Room1"]
+transform = Transform3D(8.14, 0, 0, 0, -1.1518e-07, -0.395, 0, 2.635, -1.7266e-08, -15.1154, 2.02396, -8.56498)
+material_override = SubResource("StandardMaterial3D_2jlog")
+mesh = SubResource("BoxMesh_q848w")
+skeleton = NodePath("../../Room2/Floor")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Room1/wall13"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room1/wall13/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999998, 1.19904e-14, 0, 3.12639e-13, 1, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_0sgno")
+
+[node name="wall14" type="MeshInstance3D" parent="Room1"]
+transform = Transform3D(8.14, 0, 0, 0, -1.1518e-07, -0.395, 0, 2.635, -1.7266e-08, -15.1154, 1.01634, -6.61625)
+material_override = SubResource("StandardMaterial3D_2jlog")
+mesh = SubResource("BoxMesh_q848w")
+skeleton = NodePath("../../Room2/Floor")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Room1/wall14"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room1/wall14/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 0.999998, 1.19904e-14, 0, 3.12639e-13, 1, 0, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_0sgno")
 
@@ -606,4 +653,4 @@ mesh = SubResource("BoxMesh_sg4vc")
 shape = SubResource("ConcavePolygonShape3D_wavwy")
 
 [node name="Player" parent="." instance=ExtResource("1_lxuc5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1391, 0, 1.4454)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8088, 4.34449, -15.769)
