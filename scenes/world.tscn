@@ -13,16 +13,19 @@
 
 [sub_resource type="Sky" id="Sky_h1v1i"]
 sky_material = SubResource("ProceduralSkyMaterial_lsuqw")
+radiance_size = 0
 
 [sub_resource type="Environment" id="Environment_0t73y"]
 background_mode = 2
 sky = SubResource("Sky_h1v1i")
+sky_rotation = Vector3(-6.28319, 0, 0)
+ambient_light_source = 1
 tonemap_mode = 2
 glow_enabled = true
 fog_light_color = Color(1, 1, 1, 1)
 fog_light_energy = 1.47
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.1618
+volumetric_fog_density = 0.223
 volumetric_fog_emission = Color(0.377919, 0.377919, 0.377919, 1)
 volumetric_fog_emission_energy = 0.1
 volumetric_fog_detail_spread = 2.5
@@ -264,6 +267,17 @@ skeleton = NodePath("../Floor")
 [node name="StaticBody3D" type="StaticBody3D" parent="Room2/wall9"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room2/wall9/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_0sgno")
+
+[node name="wall12" type="MeshInstance3D" parent="Room2"]
+transform = Transform3D(39.6567, -0.503576, 5.62247e-10, 0, -1.7113e-06, -1, 0.510136, 39.1468, -4.37078e-08, 50.9581, 5.89343, -19.8002)
+material_override = SubResource("StandardMaterial3D_ibfcy")
+mesh = SubResource("BoxMesh_q848w")
+skeleton = NodePath("../Floor")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Room2/wall12"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room2/wall12/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_0sgno")
 
 [node name="wall10" type="MeshInstance3D" parent="Room2"]
@@ -653,4 +667,4 @@ mesh = SubResource("BoxMesh_sg4vc")
 shape = SubResource("ConcavePolygonShape3D_wavwy")
 
 [node name="Player" parent="." instance=ExtResource("1_lxuc5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8088, 4.34449, -15.769)
+transform = Transform3D(-0.0358066, 0, 0.999359, 0, 1, 0, -0.999359, 0, -0.0358066, 16.8088, 4.34449, -15.769)

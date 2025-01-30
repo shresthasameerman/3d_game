@@ -15,6 +15,10 @@ extends CharacterBody3D
 @export_range(0.1, 1.0, 0.1) var CROUCH_SPEED_MULTIPLIER: float = 0.5
 @export var ENABLE_CAMERA_BOB: bool = true
 
+@export var spot_light: SpotLight3D  # Reference to your spotlight in the editor
+@export var light_smoothing: float = 5.0  # Adjust this to change how smooth the light follows
+@export var light_bob_intensity: float = 0.5  # Reduce the bobbing effect on the light
+
 var _mouse_input: bool = false
 var _rotation_input: float
 var _tilt_input: float
@@ -94,6 +98,19 @@ func _physics_process(delta):
 
 	move_and_slide()
 
+	# Update spotlight position based on camera bob
+	if spot_light and ENABLE_CAMERA_BOB:
+		# Get the camera's current position relative to its default
+		var camera_offset = CAMERA_CONTROLLER.position
+		
+		# Apply a dampened version of the camera bob to the light
+		var target_position = camera_offset * light_bob_intensity
+		spot_light.position = spot_light.position.lerp(target_position, delta * light_smoothing)
+		
+		# If camera bob is disabled, smoothly return light to default position
+		if not animation_player.is_playing():
+			spot_light.position = spot_light.position.lerp(Vector3.ZERO, delta * light_smoothing)
+
 func toggle_crouch():
 	if _is_crouching and CROUCH_SHAPECAST.is_colliding() == false:
 		print("Uncrouch")
@@ -105,8 +122,6 @@ func toggle_crouch():
 		_speed = SPEED * CROUCH_SPEED_MULTIPLIER
 	_is_crouching = !_is_crouching
 
-
-# Add this method to control camera bob animation
 func toggle_camera_bob(enable: bool) -> void:
 	if ENABLE_CAMERA_BOB and animation_player.has_animation("camera_bob") and not _is_crouching:  # Check for not crouching
 		if enable and not animation_player.is_playing():

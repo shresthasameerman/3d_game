@@ -1,10 +1,12 @@
-[gd_scene load_steps=23 format=3 uid="uid://c4uwnn6flvoya"]
+[gd_scene load_steps=25 format=3 uid="uid://c4uwnn6flvoya"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_y57wc"]
 [ext_resource type="PackedScene" uid="uid://co3krbipdixoi" path="res://assets/animated_pistol.glb" id="2_qss46"]
 [ext_resource type="Script" path="res://Player/reticle.gd" id="2_rapx3"]
 [ext_resource type="Theme" uid="uid://ud5dffnvonm2" path="res://UI&Resource/new_theme.tres" id="3_4oarh"]
+[ext_resource type="Script" path="res://Scripts/gun.gd" id="3_l1p5l"]
 [ext_resource type="Script" path="res://Scripts/debug.gd" id="4_dt1y3"]
+[ext_resource type="Curve" uid="uid://dxs0b36nhexh8" path="res://curve/new_curve.tres" id="4_f0xh0"]
 [ext_resource type="Script" path="res://Scripts/state_machine.gd" id="5_d78sh"]
 [ext_resource type="Script" path="res://Scripts/IdlePlayerState.gd" id="6_7ving"]
 [ext_resource type="Script" path="res://Scripts/WalkingPlayerState.gd" id="7_84re3"]
@@ -369,15 +371,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -0.184)
 [node name="Camera3D" type="Camera3D" parent="camera controller"]
 transform = Transform3D(0.991383, 0, 0.130993, 0, 1, 0, -0.130993, 0, 0.991383, 0, 0.0844514, -0.0404529)
 
-[node name="ReflectionProbe" type="ReflectionProbe" parent="camera controller/Camera3D"]
-transform = Transform3D(1, 0, 1.49012e-08, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-intensity = 0.17
-
 [node name="weaponrig" type="Node3D" parent="camera controller/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0844514, 0.0404529)
 
-[node name="Sketchfab_Scene" parent="camera controller/Camera3D/weaponrig" instance=ExtResource("2_qss46")]
-transform = Transform3D(-0.999999, 0, -1.49012e-08, 0, 1, 0, 1.49012e-08, 0, -0.999999, 0.0664736, -0.0612862, -0.0615865)
+[node name="gun" parent="camera controller/Camera3D/weaponrig" instance=ExtResource("2_qss46")]
+transform = Transform3D(-2, 0, 8.9407e-08, 0, 2, 0, -8.9407e-08, 0, -2, 0.225536, -0.265914, -0.360984)
+script = ExtResource("3_l1p5l")
+recoil_rotation_x = ExtResource("4_f0xh0")
+recoil_rotation_z = ExtResource("4_f0xh0")
+recoil_position_z = ExtResource("4_f0xh0")
+recoil_amplitude = Vector3(0.75, 0.4, 0.15)
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="camera controller/Camera3D"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

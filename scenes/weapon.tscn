@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c13q28fipu5j7"]
+
+[ext_resource type="PackedScene" uid="uid://7lseuin0dg0y" path="res://assets/assets/axe.tscn" id="1_f4c7d"]
+[ext_resource type="Script" path="res://Scripts/int_weapon.gd" id="1_j6q6s"]
+
+[node name="Weapon" type="Node3D"]
+script = ExtResource("1_j6q6s")
+
+[node name="WeaponMesh" parent="." instance=ExtResource("1_f4c7d")]
+unique_name_in_owner = true
+
+[node name="WeaponShadow" parent="." instance=ExtResource("1_f4c7d")]
+unique_name_in_owner = true
+visible = false
