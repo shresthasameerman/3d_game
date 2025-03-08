@@ -21,6 +21,7 @@ var target_pos: Vector3
 var current_time: float = 1.0
 var is_recoiling: bool = false
 var recovery_timer: float = 0.0
+var raycast_bullet = preload("res://scenes/raycast_test.tscn") 
 
 func _ready():
 	# Store the very first transform as true initial position
@@ -59,6 +60,7 @@ func reset_targets():
 func _physics_process(delta: float):
 	if Input.is_action_just_pressed("fire"):
 		apply_recoil()
+		_attack()
 	
 	if is_recoiling:
 		if current_time < 1.0:
@@ -103,6 +105,21 @@ func apply_recoil():
 	
 	# Randomize horizontal recoil direction
 	current_amplitude.y *= -1 if randf() > 0.5 else 1
-
-func get_recoil_progress() -> float:
-	return current_time
+func _attack() -> void:
+	var camera = Global.player.CAMERA_CONTROLLER
+	var space_state = camera.get_world_3d().direct_space_state
+	var screen_center = get_viewport().size/2
+	var origin = camera.project_ray_origin(screen_center)
+	var end = origin + camera.project_ray_normal(screen_center) * 1000
+	var query = PhysicsRayQueryParameters3D.create(origin, end)
+	query.collide_with_bodies = true
+	var result = space_state.intersect_ray(query)
+	if result:
+		_test_raycast(result.get("position"))
+	
+func _test_raycast(position: Vector3) -> void:
+	var instance = raycast_bullet.instantiate()
+	get_tree().root.add_child(instance)
+	instance.global_position = position
+	await get_tree().create_timer(3).timeout
+	instance.queue_free()
