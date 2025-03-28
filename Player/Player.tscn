@@ -1,19 +1,19 @@
 [gd_scene load_steps=25 format=3 uid="uid://c4uwnn6flvoya"]
 
-[ext_resource type="Script" path="res://Scripts/player.gd" id="1_y57wc"]
+[ext_resource type="Script" uid="uid://f8ygi5qvma5s" path="res://Scripts/player.gd" id="1_y57wc"]
 [ext_resource type="PackedScene" uid="uid://co3krbipdixoi" path="res://assets/animated_pistol.glb" id="2_qss46"]
-[ext_resource type="Script" path="res://Player/reticle.gd" id="2_rapx3"]
+[ext_resource type="Script" uid="uid://byer6lmcje201" path="res://Player/reticle.gd" id="2_rapx3"]
 [ext_resource type="Theme" uid="uid://ud5dffnvonm2" path="res://UI&Resource/new_theme.tres" id="3_4oarh"]
-[ext_resource type="Script" path="res://Scripts/gun.gd" id="3_l1p5l"]
-[ext_resource type="Script" path="res://Scripts/debug.gd" id="4_dt1y3"]
-[ext_resource type="Curve" uid="uid://dxs0b36nhexh8" path="res://curve/new_curve.tres" id="4_f0xh0"]
-[ext_resource type="Script" path="res://Scripts/state_machine.gd" id="5_d78sh"]
-[ext_resource type="Script" path="res://Scripts/IdlePlayerState.gd" id="6_7ving"]
-[ext_resource type="Script" path="res://Scripts/WalkingPlayerState.gd" id="7_84re3"]
-[ext_resource type="Script" path="res://Scripts/SprintingPlayerState.gd" id="8_c20cg"]
-[ext_resource type="Script" path="res://Scripts/state.gd" id="9_jecd6"]
-[ext_resource type="Script" path="res://Scripts/SlidingPlayerScript.gd" id="10_8krj0"]
-[ext_resource type="Script" path="res://Scripts/jumpingplayerstate.gd" id="11_3k2jk"]
+[ext_resource type="Script" uid="uid://b18tbmwthob21" path="res://Scripts/gun.gd" id="3_l1p5l"]
+[ext_resource type="Script" uid="uid://b8hl8uvh8y1tc" path="res://Scripts/debug.gd" id="4_dt1y3"]
+[ext_resource type="Curve" uid="uid://dxs0b36nhexh8" path="res://curve/new_curve.tres" id="4_jxuu1"]
+[ext_resource type="Script" uid="uid://b7an2rylx1nx0" path="res://Scripts/state_machine.gd" id="5_d78sh"]
+[ext_resource type="Script" uid="uid://d0q5ef8jhyy2e" path="res://Scripts/IdlePlayerState.gd" id="6_7ving"]
+[ext_resource type="Script" uid="uid://532b2rp4tk4g" path="res://Scripts/WalkingPlayerState.gd" id="7_84re3"]
+[ext_resource type="Script" uid="uid://dq8cjhdcj6jor" path="res://Scripts/SprintingPlayerState.gd" id="8_c20cg"]
+[ext_resource type="Script" uid="uid://dwil5770fojq6" path="res://Scripts/state.gd" id="9_jecd6"]
+[ext_resource type="Script" uid="uid://7kug6iecjvlk" path="res://Scripts/SlidingPlayerScript.gd" id="10_8krj0"]
+[ext_resource type="Script" uid="uid://bagixy4nldrdd" path="res://Scripts/jumpingplayerstate.gd" id="11_3k2jk"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xe8qx"]
 
@@ -339,12 +339,12 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rjlig"]
 _data = {
-"RESET": SubResource("Animation_n8wpo"),
-"camera_bob": SubResource("Animation_mjo5i"),
-"crouch": SubResource("Animation_vxgpk"),
-"jumpend": SubResource("Animation_cjyb5"),
-"jumpstart": SubResource("Animation_oikd0"),
-"sprint": SubResource("Animation_n8f0t")
+&"RESET": SubResource("Animation_n8wpo"),
+&"camera_bob": SubResource("Animation_mjo5i"),
+&"crouch": SubResource("Animation_vxgpk"),
+&"jumpend": SubResource("Animation_cjyb5"),
+&"jumpstart": SubResource("Animation_oikd0"),
+&"sprint": SubResource("Animation_n8f0t")
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_iyeqr"]
@@ -377,16 +377,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0844514, 0.0404529)
 [node name="gun" parent="camera controller/Camera3D/weaponrig" instance=ExtResource("2_qss46")]
 transform = Transform3D(-2, 0, 8.9407e-08, 0, 2, 0, -8.9407e-08, 0, -2, 0.225536, -0.265914, -0.360984)
 script = ExtResource("3_l1p5l")
-recoil_rotation_x = ExtResource("4_f0xh0")
-recoil_rotation_z = ExtResource("4_f0xh0")
-recoil_position_z = ExtResource("4_f0xh0")
-recoil_amplitude = Vector3(0.75, 0.4, 0.15)
-
-[node name="ReflectionProbe" type="ReflectionProbe" parent="camera controller/Camera3D"]
+recoil_rotation_x = ExtResource("4_jxuu1")
+recoil_rotation_z = ExtResource("4_jxuu1")
+recoil_position_z = ExtResource("4_jxuu1")
+recoil_amplitude = Vector3(0.12, 0.26, 0.3)
+recoil_randomness = Vector3(0.21, 0.24, 0.12)
+return_speed = 5.15
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_rjlig")
+&"": SubResource("AnimationLibrary_rjlig")
 }
 playback_auto_capture = false
 playback_default_blend_time = 0.1
@@ -461,6 +461,3 @@ script = ExtResource("10_8krj0")
 
 [node name="JumpingPlayerState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("11_3k2jk")
-
-[node name="AttackingPlayerState" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("9_jecd6")

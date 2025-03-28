@@ -1,7 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://c6dutmr0apkre"]
 
 [ext_resource type="PackedScene" uid="uid://dquhav36rw0e2" path="res://assets/axe.glb" id="1_1sky2"]
-[ext_resource type="Script" path="res://Scripts/axe.gd" id="2_eepb5"]
+
+[sub_resource type="Resource" id="Resource_odgf8"]
+metadata/__load_path__ = "res://Scripts/axe.gd"
 
 [node name="axe" instance=ExtResource("1_1sky2")]
-script = ExtResource("2_eepb5")
+script = SubResource("Resource_odgf8")

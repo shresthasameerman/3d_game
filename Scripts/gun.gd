@@ -1,5 +1,7 @@
 extends Node3D
 
+signal weapon_fired
+
 # Recoil curves
 @export var recoil_rotation_x : Curve  # Vertical recoil
 @export var recoil_rotation_z : Curve  # Horizontal recoil
@@ -106,6 +108,7 @@ func apply_recoil():
 	# Randomize horizontal recoil direction
 	current_amplitude.y *= -1 if randf() > 0.5 else 1
 func _attack() -> void:
+	weapon_fired.emit()
 	var camera = Global.player.CAMERA_CONTROLLER
 	var space_state = camera.get_world_3d().direct_space_state
 	var screen_center = get_viewport().size/2
@@ -115,11 +118,17 @@ func _attack() -> void:
 	query.collide_with_bodies = true
 	var result = space_state.intersect_ray(query)
 	if result:
-		_test_raycast(result.get("position"))
+		_bullet_hole(result.get("position"), result.get("normal"))
 	
-func _test_raycast(position: Vector3) -> void:
+func _bullet_hole(position: Vector3, normal: Vector3) -> void:
 	var instance = raycast_bullet.instantiate()
 	get_tree().root.add_child(instance)
 	instance.global_position = position
-	await get_tree().create_timer(3).timeout
+	instance.look_at(instance.global_transform.origin + normal, Vector3.UP)
+	if normal != Vector3.UP and normal != Vector3.DOWN:
+		instance.rotate_object_local(Vector3(1,0,0), 90)
+	await get_tree().create_timer(2).timeout
+	var fade = get_tree().create_tween()
+	fade.tween_property(instance, "modulate:a", 0, 1.5)
+	await get_tree().create_timer(1.5).timeout
 	instance.queue_free()
