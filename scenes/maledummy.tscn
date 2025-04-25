@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd1r08qaxcvv5"]
+
+[ext_resource type="Script" uid="uid://8u15mevl8i1v" path="res://Scripts/DummyStateMachine.gd" id="1_2yvm8"]
+[ext_resource type="PackedScene" uid="uid://dcw5dmshkcel3" path="res://assets/video-game-dummy-model-master/dummymale.glb" id="2_8v6hx"]
+
+[node name="maledummy" type="Node3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+script = ExtResource("1_2yvm8")
+
+[node name="dummymale" parent="." instance=ExtResource("2_8v6hx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01627, 0)
+
+[node name="RayCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.23228, -1.8909e-09)
+target_position = Vector3(0, -8.745, 0)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=25 format=3 uid="uid://c4uwnn6flvoya"]
 
 [ext_resource type="Script" uid="uid://f8ygi5qvma5s" path="res://Scripts/player.gd" id="1_y57wc"]
-[ext_resource type="PackedScene" uid="uid://co3krbipdixoi" path="res://assets/animated_pistol.glb" id="2_qss46"]
+[ext_resource type="PackedScene" uid="uid://b2iua08bb8c2t" path="res://assets/animated_pistol.tscn" id="2_p7tob"]
 [ext_resource type="Script" uid="uid://byer6lmcje201" path="res://Player/reticle.gd" id="2_rapx3"]
 [ext_resource type="Theme" uid="uid://ud5dffnvonm2" path="res://UI&Resource/new_theme.tres" id="3_4oarh"]
 [ext_resource type="Script" uid="uid://b18tbmwthob21" path="res://Scripts/gun.gd" id="3_l1p5l"]
@@ -361,7 +361,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_xe8qx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.5, 0)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.5, 0)
 mesh = SubResource("CapsuleMesh_esi2p")
 skeleton = NodePath("../..")
 
@@ -374,15 +374,15 @@ transform = Transform3D(0.991383, 0, 0.130993, 0, 1, 0, -0.130993, 0, 0.991383, 
 [node name="weaponrig" type="Node3D" parent="camera controller/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0844514, 0.0404529)
 
-[node name="gun" parent="camera controller/Camera3D/weaponrig" instance=ExtResource("2_qss46")]
-transform = Transform3D(-2, 0, 8.9407e-08, 0, 2, 0, -8.9407e-08, 0, -2, 0.225536, -0.265914, -0.360984)
+[node name="Sketchfab_Scene" parent="camera controller/Camera3D/weaponrig" instance=ExtResource("2_p7tob")]
+transform = Transform3D(-1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, -1, 0.085, -0.075, -0.245)
 script = ExtResource("3_l1p5l")
 recoil_rotation_x = ExtResource("4_jxuu1")
 recoil_rotation_z = ExtResource("4_jxuu1")
 recoil_position_z = ExtResource("4_jxuu1")
-recoil_amplitude = Vector3(0.12, 0.26, 0.3)
-recoil_randomness = Vector3(0.21, 0.24, 0.12)
-return_speed = 5.15
+recoil_amplitude = Vector3(0.3, 0.2, 0.2)
+recoil_randomness = Vector3(0.1, 0.05, 0.05)
+max_recoil = Vector3(10, 5, 0.5)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -420,6 +420,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+use_top_left = true
 script = ExtResource("2_rapx3")
 
 [node name="DebugPanel" type="PanelContainer" parent="UI"]

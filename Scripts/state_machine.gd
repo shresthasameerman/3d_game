@@ -17,7 +17,7 @@ func _ready():
 			push_warning("State Machine contains incompatible child node")
 	if CURRENT_STATE:
 		CURRENT_STATE.enter()
-	previous_state = CURRENT_STATE.name
+		previous_state = CURRENT_STATE.name
 
 func _process(delta):
 	if CURRENT_STATE:
@@ -41,5 +41,3 @@ func on_child_transition(new_state_name: StringName) -> void:
 			if Global.debug and Global.debug.visible:
 				Global.debug.add_property(machine_name, CURRENT_STATE.name, 1)
 				previous_state = CURRENT_STATE.name
-	else:
-		push_warning("State doesn't exist")

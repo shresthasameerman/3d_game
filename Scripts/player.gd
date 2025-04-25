@@ -113,11 +113,13 @@ func _physics_process(delta):
 
 func toggle_crouch():
 	if _is_crouching and CROUCH_SHAPECAST.is_colliding() == false:
-		print("Uncrouch")
+		# Remove or comment out this print statement
+		# print("Uncrouch")
 		animation_player.play("crouch", -1, -(_speed * CROUCH_SPEED_MULTIPLIER), true)
 		_speed = SPEED
 	elif not _is_crouching:
-		print("Crouch")
+		# Remove or comment out this print statement
+		# print("Crouch")
 		animation_player.play("crouch", -1, _speed * CROUCH_SPEED_MULTIPLIER)
 		_speed = SPEED * CROUCH_SPEED_MULTIPLIER
 	_is_crouching = !_is_crouching

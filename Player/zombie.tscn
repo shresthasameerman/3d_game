@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://bsa5rgcgt63ir"]
+
+[ext_resource type="Script" uid="uid://cc2qajokmp4cu" path="res://Scripts/zombie.gd" id="1_4c68u"]
+[ext_resource type="PackedScene" uid="uid://h6lpe3chjx7d" path="res://assets/Scary Zombie Pack/Ch10_nonPBR.fbx" id="2_kd0t2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6cdns"]
+
+[node name="Zombie" type="CharacterBody3D"]
+script = ExtResource("1_4c68u")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.97314, 0)
+shape = SubResource("CapsuleShape3D_6cdns")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+
+[node name="Ch10_nonPBR" parent="MeshInstance3D" instance=ExtResource("2_kd0t2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0707054, -0.0444978, -0.0193596)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="AttackArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea"]
+
+[node name="DetectionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
